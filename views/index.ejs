@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+    <title>quiz</title>
+    <style>
+
+.radio-custom {
+    opacity: 0;
+    position: absolute;   
+}
+
+ .radio-custom, .radio-custom-label {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 5px;
+    cursor: pointer;
+}
+
+ .radio-custom-label {
+     color: blanchedalmond;
+    position: relative;
+}
+
+ .radio-custom + .radio-custom-label:before {
+    content: '';
+    background: black;
+    
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+
+
+.radio-custom + .radio-custom-label:before {
+    border-radius: 50%;
+}
+
+.radio-custom:checked + .radio-custom-label:before {
+    content: "\f00c";
+    font-family: 'FontAwesome';
+    color: rgb(14, 243, 26);
+}
+ .op{
+    display: none;
+} 
+ body{
+     font-size: 2rem;
+     font-weight: 600;
+     line-height: 2;
+     background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(100,100,112,1) 100%, rgba(0,212,255,1) 100%);
+ }
+ 
+hr.style18 { 
+  height: 30px; 
+  border-style: solid; 
+  border-color: #d62424; 
+  border-width: 1px 0 0 0; 
+  border-radius: 20px; 
+} 
+hr.style18:before { 
+  display: block; 
+  content: ""; 
+  height: 30px; 
+  margin-top: -31px; 
+  border-style: solid; 
+  border-color: #8c8b8b; 
+  border-width: 0 0 1px 0; 
+  border-radius: 20px; 
+}
+.text{
+    font-size: 5rem;
+    text-transform: uppercase;
+    background: linear-gradient(to right, #ffae8f,#ff677d,#cd6684,#6f5a7e);
+    -webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+.container .box { 
+               width: 100%;
+                display:table; 
+            } 
+            .container .box .box-row { 
+                display:table-row; 
+            } 
+            .container .box .box-cell { 
+                display:table-cell; 
+                width:50%; 
+                padding:10px; 
+            } 
+            .container .box .box-cell.box1 { 
+               
+                text-align:justify; 
+             } 
+            .container .box .box-cell.box2 { 
+                
+                text-align:justify 
+            }
+            
+            .svg-shape{
+                stroke-dasharray:140 540;
+                stroke-dashoffset:-295;
+                stroke-width: 6px;
+                fill: transparent;
+                stroke: tomato;
+                border-bottom: 5px solid black;
+                transition: stroke-width 1s,
+                            stroke-dashoffset 1s,
+                            stroke-dasharray 1s;
+            }
+            .tex{
+                font-family: "Roboto Condensed";
+                font-size: 1.5rem;
+                font-weight: 600;
+                line-height: 32px;
+                letter-spacing: 0.5rem;
+                color: blanchedalmond;
+                top: -48px;
+                position: relative;
+            }
+            .wrapper:hover .svg-shape{
+                stroke-dashoffset: 0;
+                stroke-dasharray: 760;
+            }
+            #form{
+                width: 100%;
+                height: 100%;
+            }
+    </style>
+</head>
+
+<body >
+    <div class="container" >
+    <h1 class="text" style=" text-align: center;">welcome to quiz</h1>
+    <hr class="style18">
+    <form id="form" method="POST" action="/res">
+       
+              
+            
+            
+        <% qno = 0 %>
+        <% data.forEach((k)=>{%>
+            
+        <% qno++ %>
+        <div id="m<%=qno%>" class="op" style="background-color: black; padding: 5%; position: relative;">
+          
+        <p style="color: rgb(243, 116, 116);">
+
+            Q<%=qno%>-<%- k.question%>
+        </p>
+        <% option = []%>
+        <% option = k.incorrect_answers %>
+        <% option.push(k.correct_answer) %>
+        <%
+            function shuffleArray(array) {
+                for (var i = array.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+                return array;
+            }
+        %>
+        <% option = shuffleArray(option) %>
+        <% option.forEach(o => { %>
+            <div >
+               
+                    <input id="<%- o%><%= qno %>" class="radio-custom"  type="radio" name="<%= qno %>" value="<%= o %>"  >
+                <label for="<%- o%><%= qno %>" class="radio-custom-label">  <%- o%></label>
+                
+                <!-- <input type="text" class="form-control" aria-label="Text input with radio button" value="<%- o%>" readonly> -->
+              </div>
+              
+                   
+                    
+                           
+        <% }) %>
+        
+        <div class="box">
+            <div class="box-row">
+                <div id="n<%=qno%>" class="box-cell box2 wrapper" style="text-align: center; width: 50%; margin-right: 0em;">
+                    <svg height="60" width="200"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <rect class="svg-shape" height="60" width="200"/>
+                        <div class="tex">NEXT</div>
+                    </svg>
+                  </div>
+                <div id="p<%=qno%>" class="box-cell box1 wrapper" style="text-align: center; width: 50%; margin-right: 0em;">
+            <svg height="60" width="200"
+                xmlns="http://www.w3.org/2000/svg">
+                <rect class="svg-shape" height="60" width="200"/>
+                <div  class="tex">Prev</div>
+            </svg>
+          </div>
+          
+        </div>
+        </div>
+        </div>
+        
+        <input type="text" name="ans" value="<%=k.correct_answer%>" hidden>
+        <% }) %>
+        <div id="m11" class="op" style="background-color: black; padding:25% 25% 25% 25%; position: relative; text-align: center;">
+            <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+        
+        </div>
+     </form>
+</div>
+<script>
+    var m1 = document.getElementById("m1");
+    var m2 = document.getElementById("m2");
+    var m3 = document.getElementById("m3");
+    var m4 = document.getElementById("m4");
+    var m5 = document.getElementById("m5");
+    var m6 = document.getElementById("m6");
+    var m7 = document.getElementById("m7");
+    var m8 = document.getElementById("m8");
+    var m9 = document.getElementById("m9");
+    var m10 = document.getElementById("m10");
+
+     var p1 = document.getElementById("p1");
+     p1.style.opacity=0;
+  
+    m1.classList.toggle("op");
+ 
+  document.getElementById('n1').addEventListener("click",function() {
+    
+        m1.classList.toggle("op");
+        m2.classList.toggle("op");  
+    });
+    document.getElementById('n2').addEventListener("click",function() {
+    
+    m2.classList.toggle("op");
+    m3.classList.toggle("op");  
+});
+document.getElementById('n3').addEventListener("click",function() {
+    
+    m3.classList.toggle("op");
+    m4.classList.toggle("op");  
+});
+document.getElementById('n4').addEventListener("click",function() {
+    
+    m4.classList.toggle("op");
+    m5.classList.toggle("op");  
+});
+document.getElementById('n5').addEventListener("click",function() {
+    
+    m5.classList.toggle("op");
+    m6.classList.toggle("op");  
+});
+document.getElementById('n6').addEventListener("click",function() {
+    
+    m6.classList.toggle("op");
+    m7.classList.toggle("op");  
+});
+document.getElementById('n7').addEventListener("click",function() {
+    
+    m7.classList.toggle("op");
+    m8.classList.toggle("op");  
+});
+document.getElementById('n8').addEventListener("click",function() {
+    
+    m8.classList.toggle("op");
+    m9.classList.toggle("op");  
+});
+document.getElementById('n9').addEventListener("click",function() {
+    
+    m9.classList.toggle("op");
+    m10.classList.toggle("op");  
+});
+document.getElementById('n10').addEventListener("click",function() {
+    
+    m10.classList.toggle("op");
+    m11.classList.toggle("op");  
+});
+document.getElementById('p2').addEventListener("click",function() {
+    
+    m2.classList.toggle("op");
+    m1.classList.toggle("op");  
+});
+document.getElementById('p3').addEventListener("click",function() {
+
+m3.classList.toggle("op");
+m2.classList.toggle("op");  
+});
+document.getElementById('p4').addEventListener("click",function() {
+
+m4.classList.toggle("op");
+m3.classList.toggle("op");  
+});
+document.getElementById('p5').addEventListener("click",function() {
+
+m5.classList.toggle("op");
+m4.classList.toggle("op");  
+});
+document.getElementById('p6').addEventListener("click",function() {
+
+m6.classList.toggle("op");
+m5.classList.toggle("op");  
+});
+document.getElementById('p7').addEventListener("click",function() {
+
+m7.classList.toggle("op");
+m6.classList.toggle("op");  
+});
+document.getElementById('p8').addEventListener("click",function() {
+
+m8.classList.toggle("op");
+m7.classList.toggle("op");  
+});
+document.getElementById('p9').addEventListener("click",function() {
+
+m9.classList.toggle("op");
+m8.classList.toggle("op");  
+});
+document.getElementById('p10').addEventListener("click",function() {
+
+m10.classList.toggle("op");
+m9.classList.toggle("op");  
+});
+
+</script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
+
+</html>
+
+
+
+
+
+
